@@ -4,7 +4,7 @@ name: Saludar al usuario
 on:
   push:
     branches:
-      - main
+      - ejercicio1
 
 jobs:
   # Un único job llamado saludar-al-usuario
