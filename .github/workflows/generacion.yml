@@ -1,0 +1,40 @@
+name: Generacion api2codigo
+
+# Disparar automáticamente con cada push a ejercicio3
+on:
+  push:
+    branches:
+      - ejercicio3
+
+jobs:
+  # Un único job llamado generar-codigo
+  generar-codigo:
+    # Ejecutar en ubuntu-latest
+    runs-on: ubuntu-latest
+
+    steps:
+      # actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Configurar Java 17 (Temurin)
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Generar el código con OpenAPI Generator
+      - name: Generar código Python Flask
+        run: java -jar openapi-generator-cli.jar generate -i api.yaml -g python-flask -o ./openapi_server
+
+      # Comprimir el resultado
+      - name: Comprimir carpeta generada
+        run: zip -r openapi_server.zip openapi_server
+
+      # Subir el artefacto generado
+      - name: Subir artefacto comprimido
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi_server
+          path: openapi_server.zip
