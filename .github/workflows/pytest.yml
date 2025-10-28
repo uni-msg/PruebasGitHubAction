@@ -1,0 +1,32 @@
+name: Pytest
+
+# Disparar automáticamente con cada push a main
+on:
+  push:
+    branches:
+      - ejercicio2
+
+jobs:
+  # Un único job llamado tests
+  tests:
+    # Ejecutar en Ubuntu (que tiene Python instalado)
+    runs-on: ubuntu-latest
+
+    steps:
+      # actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Configurar Python (versión más reciente)
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Instalar dependencias
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      # Ejecuta la pytest
+      - name: Ejecutar pytest
+        run: pytest
